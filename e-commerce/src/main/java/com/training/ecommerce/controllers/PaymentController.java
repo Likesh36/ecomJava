@@ -4,13 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.training.ecommerce.dto.ChangePasswordRequest;
 import com.training.ecommerce.entities.Payment;
+import com.training.ecommerce.exception.PasswordException;
+import com.training.ecommerce.exception.UserNotFoundException;
 import com.training.ecommerce.iservices.PaymentService;
+import com.training.ecommerce.services.UserService;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/payments")
+@CrossOrigin(origins="http://localhost:4200")
 public class PaymentController {
 
     @Autowired
@@ -51,7 +58,27 @@ public class PaymentController {
         paymentService.deletePayment(id);
         return ResponseEntity.noContent().build();
     }
-}
+//    @PutMapping()
+//    public void update(@PathVariable Long id) {
+//    	paymentService.update(id);
+//    	
+    @PutMapping("/trackrec/{id}")
+    public ResponseEntity<String> trackrec(@PathVariable Long id,@Valid @RequestBody Payment payment) {
+    	try
+    	{
+    		paymentService.update(id, payment.getName(), payment.getDescription(), payment.getAmount(), payment.getPaymentMethod(), payment.getTrackrec());
+    		return ResponseEntity.ok("Delivered");
+    	}
+    	catch(Exception ex)
+    	{
+    		return ResponseEntity.badRequest().body(ex.getMessage());
+    	}
+    }
+    	    
+}	
+	
+    	
+    
 
 
 

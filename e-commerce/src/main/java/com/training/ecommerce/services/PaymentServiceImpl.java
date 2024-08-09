@@ -52,6 +52,27 @@ public class PaymentServiceImpl implements PaymentService {
             paymentRepository.deleteById(id);
         }
     }
+
+    public Payment updatetrackrec(Long id, String name, String description, Double amount, String paymentMethod, String updateInfo, String trackrec) {
+        Optional<Payment> optionalPayment = paymentRepository.findById(id);
+
+        if (optionalPayment.isPresent()) {
+        	 Payment payment = optionalPayment.get();
+                 payment.setTrackrec(trackrec);
+            return paymentRepository.save(payment);
+        } else {
+            throw new RuntimeException("Payment not found with id " + id);
+        }
+
+
+}
+
+	@Override
+	public Payment update(Long id, String name, String description, Double amount, String paymentMethod,
+			String updateInfo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
 
